@@ -1,0 +1,553 @@
+<meta charset="utf-8">
+<title>Control Preventivo del Canal Educativo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --bg:#0A0A0C; --bg2:#141418; --bg3:#1E1E25; --line:#2C2C36;
+  --w:#FFFFFF; --fog:#A6A6B2; --dim:#6E6E7C;
+  --red:#F40009; --redl:#FF4D4D; --redsoft:#2A0A0D;
+  --amber:#FFB020; --green:#3DD68C;
+}
+*{box-sizing:border-box}
+html,body{margin:0; padding:0}
+body{
+  background:var(--bg); color:var(--w);
+  font-family:Barlow,-apple-system,BlinkMacSystemFont,sans-serif;
+  font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.blk{font-family:"Archivo Black",Impact,sans-serif; font-weight:400; margin:0; letter-spacing:-.025em; line-height:.95}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums}
+.eye{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--redl); display:block; margin-bottom:20px}
+
+.slide{display:none; min-height:100vh; padding:80px 40px 110px; animation:in .38s cubic-bezier(.2,.8,.2,1)}
+.slide.on{display:grid; align-content:center; align-content:safe center}
+@keyframes in{from{opacity:0; transform:translateY(16px)}to{opacity:1; transform:none}}
+.in{max-width:1120px; margin:0 auto; width:100%}
+h2.blk{font-size:clamp(32px,5.2vw,60px); line-height:1.04; text-wrap:balance; max-width:23ch}
+.lead{font-size:clamp(16.5px,1.9vw,21px); color:var(--fog); max-width:56ch; margin:22px 0 0}
+.red{color:var(--redl)}
+
+#s0 .in{max-width:1180px}
+#s0 h1{font-size:clamp(46px,9.4vw,124px)}
+#s0 .lead{font-size:clamp(18px,2.2vw,25px); color:var(--w); opacity:.72; max-width:46ch; margin-top:30px}
+.rule{height:7px; width:132px; background:var(--red); margin-bottom:36px}
+.cred{display:flex; flex-wrap:wrap; gap:8px 44px; margin-top:64px; font-size:13px; color:var(--dim)}
+.cred b{display:block; font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--red); font-weight:500; margin-bottom:4px}
+.cred span{color:var(--fog)}
+
+.bar{position:fixed; inset:auto 0 0 0; z-index:60; display:flex; align-items:center; gap:16px; padding:14px 26px; background:rgba(10,10,12,.9); backdrop-filter:blur(14px); border-top:1px solid var(--line)}
+.dots{display:flex; gap:5px; flex:1; flex-wrap:wrap}
+.dot{width:26px; height:4px; border-radius:99px; background:var(--line); border:none; padding:0; cursor:pointer; transition:background .2s}
+.dot.on{background:var(--red)} .dot:hover{background:var(--dim)}
+.cnt{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--dim); min-width:50px; text-align:right}
+.nv{display:flex; gap:7px}
+.nv button{font-size:17px; cursor:pointer; width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:var(--bg2); color:var(--w); display:grid; place-items:center; font-family:Barlow,sans-serif}
+.nv button:hover{background:var(--red); border-color:var(--red)}
+.nv button:disabled{opacity:.3; cursor:default; background:var(--bg2); border-color:var(--line)}
+:focus-visible{outline:3px solid var(--redl); outline-offset:3px}
+
+.g3{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:42px}
+.g2{display:grid; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); gap:16px; margin-top:40px}
+.box{background:var(--bg2); border:1px solid var(--line); border-radius:4px; padding:28px 26px}
+.box.hot{background:var(--redsoft); border-color:#4A1116}
+.box .big{font-family:"Archivo Black",Impact,sans-serif; font-size:clamp(40px,5.8vw,66px); line-height:.9; letter-spacing:-.03em; display:block}
+.box .big.r{color:var(--redl)}
+.box .cap{font-size:14.5px; color:var(--fog); margin-top:14px; display:block; line-height:1.42; max-width:28ch}
+.box h3{font-family:"Archivo Black",Impact,sans-serif; font-size:19px; font-weight:400; margin:0 0 10px; letter-spacing:-.01em; line-height:1.22}
+.box h3 .t{display:block; font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.16em; color:var(--redl); margin-bottom:9px; font-weight:500}
+.box p{margin:0; font-size:14.5px; color:var(--fog)}
+.box p+p{margin-top:10px}
+
+.split{display:grid; grid-template-columns:1fr 1fr; gap:0; margin-top:42px; border:1px solid var(--line); border-radius:4px; overflow:hidden}
+@media (max-width:720px){.split{grid-template-columns:1fr}}
+.side{padding:30px 28px}
+.side.a{background:var(--bg2); border-right:1px solid var(--line)}
+.side.b{background:var(--redsoft)}
+.side h3{font-family:"Archivo Black",Impact,sans-serif; font-size:clamp(20px,2.6vw,27px); font-weight:400; margin:0 0 6px; letter-spacing:-.02em; line-height:1.15}
+.side .who{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--redl); display:block; margin-bottom:12px; font-weight:500}
+.side ul{list-style:none; padding:0; margin:18px 0 0; display:grid; gap:9px}
+.side li{font-size:15px; color:var(--fog); display:grid; grid-template-columns:auto 1fr; gap:11px}
+.side li b{color:var(--w); font-weight:600}
+.side li i{font-style:normal; color:var(--red); font-weight:700}
+.side p{margin:0; font-size:14.5px; color:var(--fog)}
+
+.why{display:grid; margin-top:28px; border-top:1px solid var(--line)}
+.why div{display:grid; grid-template-columns:70px 1fr; gap:clamp(14px,3vw,36px); padding:19px 0; border-bottom:1px solid var(--line); align-items:start}
+.why em{font-family:"Archivo Black",Impact,sans-serif; font-style:normal; font-size:27px; color:var(--red); line-height:.9; letter-spacing:-.03em}
+.why h3{font-family:"Archivo Black",Impact,sans-serif; font-size:clamp(17px,2.1vw,22px); font-weight:400; margin:0 0 6px; letter-spacing:-.015em; line-height:1.22}
+.why p{margin:0; font-size:14.5px; color:var(--fog); max-width:66ch}
+
+.stage{background:var(--bg2); border:1px solid var(--line); border-radius:4px; padding:16px 12px 10px; margin-top:24px; overflow-x:auto}
+svg.flow{display:block; width:100%; min-width:620px; height:auto; color:var(--dim)}
+.node{cursor:pointer}
+.node .nb{stroke:var(--line); stroke-width:1; fill:var(--bg3); transition:filter .2s}
+.node:hover .nb{filter:brightness(1.4)}
+.node text{font-family:Barlow,sans-serif; font-weight:600; pointer-events:none; fill:var(--w)}
+.n-term .nb{fill:var(--red); stroke:var(--red)}
+.n-src .nb{fill:#33333D; stroke:#43434F}
+.n-app .nb{fill:var(--redsoft); stroke:var(--red); stroke-width:2}
+.n-app text{fill:var(--redl)}
+.node.sel .nb{stroke:var(--w); stroke-width:2.4}
+.edge{fill:none; stroke:currentColor; stroke-width:1.6; opacity:.55}
+.edge.lit{opacity:1; stroke:var(--red); stroke-width:2.8}
+.elabel{font-family:"IBM Plex Mono",monospace; font-size:10px; fill:var(--dim)}
+#tok{fill:var(--redl); opacity:0} #tok.on{opacity:1}
+.dp{margin-top:12px; background:var(--bg2); border:1px solid var(--line); border-left:3px solid var(--red); border-radius:4px; padding:16px 20px; min-height:84px}
+.dp b{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--redl); display:block; margin-bottom:6px; font-weight:500}
+.dp h3{font-family:"Archivo Black",Impact,sans-serif; font-size:18px; font-weight:400; margin:0 0 5px; letter-spacing:-.01em}
+.dp p{margin:0; font-size:14px; color:var(--fog); max-width:82ch}
+.mini{display:flex; gap:12px; align-items:center; margin-top:24px; flex-wrap:wrap}
+.mini button{font-family:Barlow,sans-serif; font-size:14px; font-weight:600; cursor:pointer; padding:11px 22px; border-radius:99px; border:none; background:var(--red); color:#fff}
+.mini button:hover{background:#FF1A22}
+.mini span{font-size:13px; color:var(--dim)}
+
+.mock{background:var(--bg2); border:1px solid var(--line); border-radius:6px; overflow:hidden; margin-top:30px}
+.mtop{display:flex; align-items:center; gap:8px; padding:11px 16px; background:var(--bg3); border-bottom:1px solid var(--line)}
+.mtop i{width:9px; height:9px; border-radius:50%; background:var(--dim); opacity:.5; font-style:normal}
+.mtop b{font-size:12.5px; font-weight:600; margin-left:8px; color:var(--fog)}
+.mtop .ill{margin-left:auto; font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--dim); font-weight:400}
+.mbody{display:grid; grid-template-columns:1.3fr 1fr}
+@media (max-width:760px){.mbody{grid-template-columns:1fr}}
+.ml{padding:20px; border-right:1px solid var(--line)}
+.mr{padding:20px; background:#0F0F13}
+.mh{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--dim); margin-bottom:14px; font-weight:500}
+.krow{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:18px}
+.kt{background:var(--bg3); border:1px solid var(--line); border-radius:3px; padding:13px 14px}
+.kt em{font-style:normal; font-family:"Archivo Black",Impact,sans-serif; font-size:24px; display:block; letter-spacing:-.02em; line-height:1; color:var(--dim)}
+.kt span{font-size:10px; color:var(--dim); display:block; margin-top:6px; letter-spacing:.03em}
+.bars{display:flex; align-items:flex-end; gap:8px; height:88px; padding:10px 12px; background:var(--bg3); border:1px solid var(--line); border-radius:3px}
+.bars i{flex:1; background:#33333D; border-radius:2px 2px 0 0; font-style:normal}
+.al{background:var(--bg3); border:1px solid var(--line); border-left:3px solid var(--dim); border-radius:3px; padding:11px 13px; margin-bottom:9px}
+.al p{margin:0; font-size:12.5px; color:var(--dim); line-height:1.4}
+.al .rw{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:8px}
+.bdg{font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.12em; text-transform:uppercase; padding:3px 8px; border-radius:2px; font-weight:500}
+.bdg.n{background:var(--redsoft); color:var(--redl)}
+.bdg.w{background:#2E2208; color:var(--amber)}
+.bdg.o{background:#0B2A1C; color:var(--green)}
+.al time{font-family:"IBM Plex Mono",monospace; font-size:9.5px; color:var(--dim)}
+
+.est{display:grid; grid-template-columns:1fr 330px; gap:16px; margin-top:32px}
+@media (max-width:860px){.est{grid-template-columns:1fr}}
+.knobs{background:var(--bg2); border:1px solid var(--line); border-radius:4px; padding:24px 26px}
+.knob{margin-bottom:18px} .knob:last-child{margin-bottom:0}
+.knob label{display:flex; justify-content:space-between; align-items:baseline; gap:14px; font-size:13.5px; color:var(--fog); margin-bottom:8px}
+.knob label b{font-family:"IBM Plex Mono",monospace; font-size:15px; color:var(--w); font-weight:500}
+input[type=range]{width:100%; accent-color:var(--red); height:18px}
+.seg{display:flex; gap:6px; margin-bottom:20px}
+.seg button{
+  flex:1; font-family:Barlow,sans-serif; font-size:12.5px; font-weight:600; cursor:pointer;
+  padding:10px 8px; border-radius:3px; border:1px solid var(--line);
+  background:var(--bg3); color:var(--fog); line-height:1.25;
+}
+.seg button em{font-style:normal; display:block; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--dim); margin-top:3px}
+.seg button.on{background:var(--red); border-color:var(--red); color:#fff}
+.seg button.on em{color:rgba(255,255,255,.82)}
+.seg button:hover:not(.on){border-color:var(--dim)}
+.knob.tight{margin-bottom:13px}
+.out{background:var(--redsoft); border:1px solid #4A1116; border-radius:4px; padding:26px; align-self:start}
+.out .tg{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--redl); font-weight:500}
+.out .num{font-family:"Archivo Black",Impact,sans-serif; font-size:clamp(38px,5vw,52px); line-height:1; margin:12px 0 4px; letter-spacing:-.035em}
+.out .yr{font-size:13px; color:var(--fog); margin-bottom:20px}
+.mb{height:8px; border-radius:99px; overflow:hidden; display:flex; margin:16px 0 6px; background:#3A1015}
+.mb i{font-style:normal; height:100%}
+.brk{display:grid; gap:9px}
+.brk div{display:flex; justify-content:space-between; gap:10px; font-size:12.5px; color:var(--fog); font-family:"IBM Plex Mono",monospace}
+.brk div span:last-child{color:var(--w); font-weight:500}
+.note{font-size:13px; color:var(--dim); margin-top:22px; line-height:1.55; max-width:80ch}
+.note b{color:var(--fog)}
+
+.quote{font-family:"Archivo Black",Impact,sans-serif; font-size:clamp(24px,3.8vw,44px); line-height:1.16; letter-spacing:-.025em; max-width:27ch}
+.quote span{color:var(--redl)}
+.steps{display:grid; margin-top:42px; border-top:1px solid var(--line)}
+.steps div{display:grid; grid-template-columns:44px 1fr; gap:20px; padding:17px 0; border-bottom:1px solid var(--line); font-size:15.5px; color:var(--fog); align-items:baseline}
+.steps em{font-style:normal; font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--red); font-weight:500}
+.steps b{color:var(--w)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+@media (max-width:640px){.slide{padding:54px 20px 106px}}
+</style>
+
+<!-- 0 -->
+<section class="slide on" id="s0"><div class="in">
+  <div class="rule"></div>
+  <span class="eye">Reto Coca-Cola FEMSA · Auditoría</span>
+  <h1 class="blk">CONTROL<br>PREVENTIVO<br>DEL CANAL<br><span class="red">EDUCATIVO</span></h1>
+  <p class="lead">Detectar la venta de producto no autorizado antes de que llegue al plantel.</p>
+  <div class="cred">
+    <div><b>Curso</b><span>Plataformas de analítica de negocios</span></div>
+    <div><b>Profesores</b><span>Dr. Miguel González Mendoza · Dr. Ramón Marín Solís</span></div>
+    <div><b>Campus</b><span>Tec de Monterrey · Estado de México</span></div>
+    <div><b>Fecha</b><span>Septiembre 2026</span></div>
+  </div>
+</div></section>
+
+<!-- 1 · PROBLEMÁTICA -->
+<section class="slide" id="s1"><div class="in">
+  <span class="eye">01 · Problemática</span>
+  <h2 class="blk">El control llega <span class="red">después</span> de la entrega</h2>
+  <p class="lead">No basta con saber qué cliente compró: hay que saber qué tipo de establecimiento es y qué productos tiene autorizados. Hoy esa verificación ocurre cuando la venta ya se hizo.</p>
+  <div class="g2">
+    <div class="box"><h3><span class="t">El reto</span>Controlar de forma preventiva</h3><p>Que los productos entregados correspondan con las condiciones de cada establecimiento — no revisarlo después.</p></div>
+    <div class="box hot"><h3><span class="t">El obstáculo</span>La información vive separada</h3><p>Ventas, clientes y portafolio autorizado están en bases distintas. Mientras se cruzan a mano, el análisis es siempre posterior.</p></div>
+  </div>
+</div></section>
+
+<!-- 2 · LAS REGLAS -->
+<section class="slide" id="s2"><div class="in">
+  <span class="eye">01 · Problemática</span>
+  <h2 class="blk">Dos reglas distintas en un <span class="red">mismo canal</span></h2>
+  <div class="split">
+    <div class="side a">
+      <span class="who">Primaria</span>
+      <h3>Solo hidratación simple y alimento</h3>
+      <ul>
+        <li><i>·</i><span><b>Aguas</b> naturales</span></li>
+        <li><i>·</i><span><b>Ades</b></span></li>
+        <li><i>·</i><span><b>Alimentos VTM</b></span></li>
+      </ul>
+      <p style="margin-top:18px">Las aguas saborizadas quedan fuera: contienen edulcorantes o azúcar añadida, y por eso su venta no está permitida en primaria.</p>
+    </div>
+    <div class="side b">
+      <span class="who">Colegios y otros educativos</span>
+      <h3>Portafolio completo, con dos exclusiones</h3>
+      <ul>
+        <li><i>×</i><span><b>Bebidas alcohólicas</b></span></li>
+        <li><i>×</i><span><b>Bebidas energizantes</b></span></li>
+      </ul>
+      <p style="margin-top:18px">Todo lo demás del catálogo está autorizado para este segmento.</p>
+    </div>
+  </div>
+  <p class="lead">La misma venta puede ser correcta en un plantel e infracción en otro. Distinguirlo exige clasificar el establecimiento antes de validar el pedido.</p>
+</div></section>
+
+<!-- 3 · QUÉ DETECTAR -->
+<section class="slide" id="s3"><div class="in">
+  <span class="eye">01 · Alcance</span>
+  <h2 class="blk">Tres casos que hay que <span class="red">detectar</span></h2>
+  <div class="g3">
+    <div class="box hot"><h3><span class="t">Caso 01</span>Producto restringido</h3><p>Venta de un producto que no está en el portafolio autorizado para ese tipo de establecimiento.</p></div>
+    <div class="box"><h3><span class="t">Caso 02</span>Venta con bloqueo activo</h3><p>Operación realizada después de que el cliente debía tener un bloqueo vigente.</p></div>
+    <div class="box"><h3><span class="t">Caso 03</span>Cambio de clasificación</h3><p>Modificación del canal o la categoría del cliente justo antes de una compra que de otro modo no estaría permitida.</p></div>
+  </div>
+  <p class="note">Los tres generan riesgo operativo y afectan el cumplimiento de las políticas establecidas para cada tipo de establecimiento.</p>
+</div></section>
+
+<!-- 4 · INTEGRACIÓN -->
+<section class="slide" id="s4"><div class="in">
+  <span class="eye">02 · Cómo se integra</span>
+  <h2 class="blk">Tres fuentes, una <span class="red">llave</span></h2>
+  <div class="g3">
+    <div class="box"><h3><span class="t">Qué se vendió</span>Base transaccional</h3><p>Mes, cliente, canal, unidad operativa, SKU, marca, volumen e importe de cada operación.</p></div>
+    <div class="box"><h3><span class="t">A quién se le vendió</span>Maestro de clientes</h3><p>Nombre, canal y subcanal, región, estatus y bloqueos de cada establecimiento registrado.</p></div>
+    <div class="box"><h3><span class="t">Qué estaba permitido</span>Portafolio autorizado</h3><p>La matriz de productos elegibles según el tipo de institución educativa.</p></div>
+  </div>
+  <p class="lead">El <span class="red">identificador de cliente</span> conecta las tres. Con eso, cada venta deja de ser un número y adquiere contexto: qué se entregó, a qué tipo de plantel, y si estaba autorizado. El sistema etiqueta la operación como <b style="color:var(--w)">conforme o no conforme</b>.</p>
+</div></section>
+
+<!-- 5 · FLUJO -->
+<section class="slide" id="s5"><div class="in">
+  <span class="eye">02 · Solución</span>
+  <h2 class="blk">Un flujo, <span class="red">sin intervención manual</span></h2>
+  <div class="mini"><button id="play">▶ Simular ejecución</button><span>o toca cualquier paso</span></div>
+  <div class="stage">
+  <svg class="flow" viewBox="0 0 1040 812" role="img" aria-label="SAP alimenta la extracción y transformación en Databricks; de ahí salen Power BI por DirectQuery y la generación de alertas, desplegadas en Teams con Power Automate; ambas ramas convergen en una Power App con tableros y estatus de atención.">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+    <path id="e1" class="edge" d="M480,74 L480,99" marker-end="url(#ah)"/>
+    <path id="e2" class="edge" d="M480,163 L480,205" marker-end="url(#ah)"/>
+    <path id="esap" class="edge" d="M227,248 L352,248" marker-end="url(#ah)"/>
+    <path id="epbi" class="edge" d="M607,248 L747,248" marker-end="url(#ah)"/>
+    <path id="e3" class="edge" d="M480,289 L480,343" marker-end="url(#ah)"/>
+    <path id="e4" class="edge" d="M480,415 L480,463" marker-end="url(#ah)"/>
+    <path id="e5" class="edge" d="M480,545 L480,597" marker-end="url(#ah)"/>
+    <path id="epbiapp" class="edge" d="M860,283 L860,640 L623,640" marker-end="url(#ah)"/>
+    <path id="e6" class="edge" d="M480,681 L480,732" marker-end="url(#ah)"/>
+    <text class="elabel" x="240" y="239">extrae</text>
+    <text class="elabel" x="662" y="239">publica</text>
+    <text class="elabel" x="492" y="320">detecta</text>
+    <text class="elabel" x="492" y="443">enruta</text>
+    <text class="elabel" x="492" y="576">consolida</text>
+    <g class="node n-term" id="n-ini" role="button" tabindex="0" aria-label="Inicio">
+      <rect class="nb" x="395" y="24" width="170" height="50" rx="25"/>
+      <text x="480" y="55" text-anchor="middle" font-size="18">Inicio</text></g>
+    <g class="node" id="n-job" role="button" tabindex="0" aria-label="Ejecución Job Databricks">
+      <rect class="nb" x="365" y="103" width="230" height="60" rx="4"/>
+      <text x="480" y="128" text-anchor="middle" font-size="14">Ejecución Job</text>
+      <text x="480" y="147" text-anchor="middle" font-size="14">DATABRICKS</text></g>
+    <g class="node n-src" id="n-sap" role="button" tabindex="0" aria-label="SAP">
+      <path class="nb" d="M62,219 h165 v58 q-41,15 -82,0 t-83,0 z"/>
+      <text x="144" y="256" text-anchor="middle" font-size="23" font-weight="700">SAP</text></g>
+    <g class="node" id="n-ext" role="button" tabindex="0" aria-label="Extracción y transformación de datos">
+      <rect class="nb" x="352" y="208" width="255" height="81" rx="4"/>
+      <text x="480" y="234" text-anchor="middle" font-size="14">EXTRACCIÓN Y</text>
+      <text x="480" y="252" text-anchor="middle" font-size="14">TRANSFORMACIÓN</text>
+      <text x="480" y="270" text-anchor="middle" font-size="14">DE DATOS</text></g>
+    <g class="node" id="n-pbi" role="button" tabindex="0" aria-label="Power BI conectado con DirectQuery">
+      <rect class="nb" x="747" y="214" width="225" height="69" rx="4"/>
+      <text x="860" y="243" text-anchor="middle" font-size="14">Power BI conectado</text>
+      <text x="860" y="262" text-anchor="middle" font-size="14">con DirectQuery</text></g>
+    <g class="node" id="n-gen" role="button" tabindex="0" aria-label="Generación de alertas Databricks">
+      <rect class="nb" x="352" y="343" width="255" height="72" rx="4"/>
+      <text x="480" y="371" text-anchor="middle" font-size="14">Generación de alertas</text>
+      <text x="480" y="390" text-anchor="middle" font-size="14">Databricks (email)</text></g>
+    <g class="node" id="n-tea" role="button" tabindex="0" aria-label="Alerta desplegada en Teams con Power Automate">
+      <rect class="nb" x="352" y="463" width="255" height="82" rx="4"/>
+      <text x="480" y="489" text-anchor="middle" font-size="14">Alerta desplegada en</text>
+      <text x="480" y="508" text-anchor="middle" font-size="14">Teams con Power</text>
+      <text x="480" y="527" text-anchor="middle" font-size="14">Automate</text></g>
+    <g class="node n-app" id="n-app" role="button" tabindex="0" aria-label="Power App de auditoría">
+      <rect class="nb" x="340" y="597" width="280" height="84" rx="4"/>
+      <text x="480" y="628" text-anchor="middle" font-size="14">POWER APP: tableros,</text>
+      <text x="480" y="647" text-anchor="middle" font-size="14">alertas y estatus de</text>
+      <text x="480" y="666" text-anchor="middle" font-size="14">atención</text></g>
+    <g class="node n-term" id="n-fin" role="button" tabindex="0" aria-label="Fin">
+      <rect class="nb" x="395" y="732" width="170" height="50" rx="25"/>
+      <text x="480" y="763" text-anchor="middle" font-size="18">Fin</text></g>
+    <circle id="tok" r="6.5" cx="0" cy="0"/>
+  </svg>
+  </div>
+  <div class="dp" aria-live="polite">
+    <b id="dp-e">Toca un paso</b>
+    <h3 id="dp-t">Dos ramas, un punto de atención</h3>
+    <p id="dp-b">Tableros y alertas salen del mismo lugar y convergen en la Power App. Lo que se visualiza y lo que se notifica vienen de la misma verdad.</p>
+  </div>
+</div></section>
+
+<!-- 6 · POWER APP -->
+<section class="slide" id="s6"><div class="in">
+  <span class="eye">02 · Paso final</span>
+  <h2 class="blk">Ver, atender y <span class="red">cerrar</span> en un solo lugar</h2>
+  <div class="mock">
+    <div class="mtop"><i></i><i></i><i></i><b>Auditoría Canal Educativo · Coca-Cola FEMSA Colombia</b><span class="ill">Vista ilustrativa</span></div>
+    <div class="mbody">
+      <div class="ml">
+        <div class="mh">Tableros Power BI incrustados</div>
+        <div class="krow">
+          <div class="kt"><em>—</em><span>Impacto financiero</span></div>
+          <div class="kt"><em>—</em><span>Clientes únicos</span></div>
+          <div class="kt"><em>—</em><span>% Cumplimiento</span></div>
+        </div>
+        <div class="bars" role="img" aria-label="Tendencia mensual de incumplimientos">
+          <i style="height:34%"></i><i style="height:58%"></i><i style="height:70%"></i>
+          <i style="height:52%"></i><i style="height:80%"></i><i style="height:46%"></i><i style="height:62%"></i>
+        </div>
+        <p class="mono" style="font-size:10px; color:var(--dim); margin:10px 0 0">TENDENCIA MENSUAL DE INCUMPLIMIENTOS</p>
+      </div>
+      <div class="mr">
+        <div class="mh">Mis alertas</div>
+        <div class="al"><p><b style="color:var(--fog)">Cliente</b> · Unidad operativa<br>Producto no autorizado · Primaria</p>
+          <div class="rw"><span class="bdg n">Sin atender</span><time>hoy</time></div></div>
+        <div class="al"><p><b style="color:var(--fog)">Cliente</b> · Unidad operativa<br>Producto no autorizado · Colegios</p>
+          <div class="rw"><span class="bdg w">En revisión</span><time>ayer</time></div></div>
+        <div class="al"><p><b style="color:var(--fog)">Cliente</b> · Unidad operativa<br>Producto no autorizado · Colegios</p>
+          <div class="rw"><span class="bdg o">Atendida</span><time>esta semana</time></div></div>
+      </div>
+    </div>
+  </div>
+  <p class="lead">El estatus escribe de vuelta: es la evidencia de que el control operó, no solo de que se detectó.</p>
+</div></section>
+
+<!-- 7 · KPIs -->
+<section class="slide" id="s7"><div class="in">
+  <span class="eye">02 · Indicadores</span>
+  <h2 class="blk">Tres números que <span class="red">ordenan la acción</span></h2>
+  <div class="g3">
+    <div class="box hot"><h3><span class="t">Comercial</span>Impacto financiero del incumplimiento</h3><p>Valor monetario acumulado de las colocaciones de producto restringido en el canal educativo.</p><p>Dimensiona la exposición económica y localiza los focos de riesgo por unidad de negocio o zona.</p></div>
+    <div class="box"><h3><span class="t">Comercial</span>% Cumplimiento de portafolio</h3><p>Ventas alineadas al catálogo autorizado contra el total facturado al sector escolar.</p><p>Evalúa la adherencia a la política en cada planta y permite comparar su efectividad.</p></div>
+    <div class="box"><h3><span class="t">Clientes</span>Clientes únicos con incumplimiento</h3><p>Número neto de instituciones que han presentado anomalías en la recepción de pedidos.</p><p>Diferencia el evento fortuito del comportamiento sistemático y orienta la corrección.</p></div>
+  </div>
+</div></section>
+
+<!-- 8 · POR QUÉ -->
+<section class="slide" id="s8"><div class="in">
+  <span class="eye">03 · Por qué así</span>
+  <h2 class="blk">No es un tablero. Es un <span class="red">control interno</span></h2>
+  <div class="why">
+    <div><em>01</em><div><h3>La regla vive en el dato</h3><p>Si la validación se calcula dentro del tablero, no se versiona ni se prueba, y no se puede saber qué criterio estaba vigente cuando se detectó algo. Como dato, la misma definición alimenta tablero y alertas.</p></div></div>
+    <div><em>02</em><div><h3>El histórico no muta</h3><p>El portafolio autorizado cambia con el tiempo. Con vigencia por fecha, cada periodo se sigue evaluando con la regla que aplicaba entonces.</p></div></div>
+    <div><em>03</em><div><h3>Validar al cargar, no al consultar</h3><p>El cruce se resuelve una vez por ejecución y queda escrito. El tablero lee un resultado listo en lugar de recalcularlo en cada interacción de cada usuario.</p></div></div>
+    <div><em>04</em><div><h3>El control no depende de que alguien mire</h3><p>Las alertas nacen del dato: se disparan por condición, se enrutan al responsable, no se repiten y dejan registro. Aunque nadie abra el tablero, siguen operando.</p></div></div>
+  </div>
+</div></section>
+
+<!-- 9 · COSTOS -->
+<section class="slide" id="s9"><div class="in">
+  <span class="eye">04 · Costos</span>
+  <h2 class="blk">La estructura, <span class="red">no una cifra</span></h2>
+  <div class="est">
+    <div class="knobs">
+      <div class="seg" id="seg" role="group" aria-label="Edición de Databricks">
+        <button data-r="0.40" class="on">Standard<em>$0.40 / DBU-h</em></button>
+        <button data-r="0.55">Premium<em>$0.55 / DBU-h</em></button>
+      </div>
+      <div class="knob tight"><label>Horas/mes de warehouse activo <span class="mono" style="color:var(--dim)">DirectQuery</span> <b id="v-wh">160</b></label><input type="range" id="r-wh" min="0" max="400" step="10" value="160"></div>
+      <div class="knob tight"><label>DBU por hora del clúster <b id="v-dh">8</b></label><input type="range" id="r-dh" min="1" max="40" step="1" value="8"></div>
+      <div class="knob tight"><label>Horas/mes de ejecución del job <b id="v-hj">10</b></label><input type="range" id="r-hj" min="1" max="120" step="1" value="10"></div>
+      <div class="knob tight"><label>Infraestructura de nube <span class="mono" style="color:var(--dim)">% sobre DBU</span> <b id="v-inf">60</b></label><input type="range" id="r-inf" min="0" max="150" step="5" value="60"></div>
+      <div class="knob tight"><label>Usuarios de Power BI <b id="v-pbi">15</b></label><input type="range" id="r-pbi" min="0" max="80" step="1" value="15"></div>
+      <div class="knob"><label>Usuarios de Power Apps <b id="v-app">8</b></label><input type="range" id="r-app" min="0" max="40" step="1" value="8"></div>
+    </div>
+    <div class="out">
+      <span class="tg">Recurrente estimado</span>
+      <div class="num" id="o-mes">—</div>
+      <div class="yr" id="o-anio">—</div>
+      <div class="mb" id="o-bar"></div>
+      <div class="brk" id="o-brk"></div>
+    </div>
+  </div>
+  <p class="note"><b>Databricks cobra dos cosas por separado.</b> Las DBU miden la capacidad de procesamiento y se tarifan por edición — Standard cerca de $0.40 y Premium cerca de $0.55 USD por DBU-hora — y encima de eso el proveedor de nube factura aparte las máquinas virtuales, el disco y la red del clúster. <b>El supuesto que domina es el primero:</b> con DirectQuery el warehouse se cobra cada vez que alguien usa el tablero. Power BI y Microsoft 365 ya existen en la organización. Tarifas de referencia editables, no precios cotizados; la implementación inicial es un costo único aparte.</p>
+</div></section>
+
+<!-- 10 · CIERRE -->
+<section class="slide" id="s10"><div class="in">
+  <span class="eye">Cierre</span>
+  <p class="quote">Un tablero dice qué pasó cuando alguien lo abre. Esto <span>detecta, avisa y deja constancia</span> — aunque nadie lo abra.</p>
+  <div class="steps">
+    <div><em>01</em><span><b>Conectar directo a SAP</b> y definir la frecuencia de ejecución del job.</span></div>
+    <div><em>02</em><span><b>Definir la tabla de responsables</b> por unidad operativa: sin destinatario no hay sistema de alertas.</span></div>
+    <div><em>03</em><span><b>Construir la Power App</b> y el registro de estatus de atención.</span></div>
+    <div><em>04</em><span><b>Validar los indicadores</b> con el área de auditoría antes de liberar.</span></div>
+  </div>
+</div></section>
+
+<nav class="bar">
+  <div class="dots" id="dots"></div>
+  <span class="cnt" id="cnt">1 / 11</span>
+  <div class="nv"><button id="prev" aria-label="Anterior">‹</button><button id="next" aria-label="Siguiente">›</button></div>
+</nav>
+
+<script>
+const slides = [...document.querySelectorAll('.slide')];
+const dots = document.getElementById('dots');
+let i = 0;
+slides.forEach((_,k)=>{
+  const b = document.createElement('button');
+  b.className = 'dot' + (k?'':' on'); b.type='button';
+  b.setAttribute('aria-label', `Diapositiva ${k+1}`);
+  b.addEventListener('click', ()=>go(k));
+  dots.appendChild(b);
+});
+function go(k){
+  i = Math.max(0, Math.min(slides.length-1, k));
+  slides.forEach((s,n)=>s.classList.toggle('on', n===i));
+  [...dots.children].forEach((d,n)=>d.classList.toggle('on', n===i));
+  document.getElementById('cnt').textContent = `${i+1} / ${slides.length}`;
+  document.getElementById('prev').disabled = i===0;
+  document.getElementById('next').disabled = i===slides.length-1;
+  scrollTo({top:0, behavior:'instant'});
+}
+document.getElementById('prev').addEventListener('click', ()=>go(i-1));
+document.getElementById('next').addEventListener('click', ()=>go(i+1));
+addEventListener('keydown', e=>{
+  if(e.target.matches('input')) return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ') go(i+1);
+  if(e.key==='ArrowLeft' ||e.key==='PageUp') go(i-1);
+});
+function fromHash(){
+  const m = /^#s(\d+)$/.exec(location.hash);
+  return m ? Math.min(slides.length-1, Math.max(0, +m[1])) : 0;
+}
+go(fromHash());
+addEventListener('hashchange', ()=>go(fromHash()));
+
+const D = {
+  'n-ini':['Disparador','Inicio','Arranque programado. La frecuencia de ejecución define qué tan pronto se entera el responsable.'],
+  'n-job':['Orquestación','Ejecución Job Databricks','Un solo job coordina la captura de registros, las transformaciones y el disparo de alertas. Si un paso falla, el resto no corre con datos incompletos.'],
+  'n-sap':['Origen','SAP','El núcleo transaccional. De aquí salen las ventas facturadas, el maestro de clientes y el portafolio de productos. Único origen: nada se captura a mano.'],
+  'n-ext':['Corazón del proceso','Extracción y transformación','Se centralizan los registros y se someten a transformaciones que validan el cumplimiento normativo: cada venta se cruza contra el portafolio autorizado del tipo de establecimiento y queda etiquetada como conforme o no conforme.'],
+  'n-pbi':['Rama A','Power BI con DirectQuery','Los tableros se actualizan dinámicamente leyendo la fuente procesada, sin copia intermedia ni refrescos manuales.'],
+  'n-gen':['Rama B','Generación de alertas','Sobre las operaciones ya etiquetadas se identifican las no conformes y se arma la notificación con su contexto: cliente, producto, unidad operativa y criterio incumplido.'],
+  'n-tea':['Notificación','Teams con Power Automate','Power Automate orquesta la entrega al correo y al canal de Teams del responsable, para asegurar respuesta operativa sin que nadie tenga que abrir un tablero.'],
+  'n-app':['Punto de atención','Power App de auditoría','Donde convergen las dos ramas: tableros incrustados, alertas asignadas y el estatus de cada una. Ese estatus se registra de vuelta.'],
+  'n-fin':['Cierre','Fin','Indicadores actualizados y responsable notificado, con registro de qué se detectó y cómo se resolvió.']
+};
+function pick(id){
+  const d = D[id]; if(!d) return;
+  document.querySelectorAll('.node').forEach(n=>n.classList.toggle('sel', n.id===id));
+  document.getElementById('dp-e').textContent = d[0];
+  document.getElementById('dp-t').textContent = d[1];
+  document.getElementById('dp-b').textContent = d[2];
+}
+document.querySelectorAll('.node').forEach(n=>{
+  n.addEventListener('click', ()=>pick(n.id));
+  n.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault(); pick(n.id);} });
+});
+
+const tok = document.getElementById('tok');
+const SEQ = [{n:'n-ini'},{e:'e1'},{n:'n-job'},{e:'e2',also:'esap',an:'n-sap'},{n:'n-ext'},
+             {e:'epbi',also:'e3'},{n:'n-pbi',an:'n-gen'},{e:'e4'},{n:'n-tea'},
+             {e:'e5',also:'epbiapp'},{n:'n-app'},{e:'e6'},{n:'n-fin'}];
+let run = false;
+const soft = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hold = ms => new Promise(r=>setTimeout(r,ms));
+function glide(id, ms){
+  return new Promise(res=>{
+    const p = document.getElementById(id), L = p.getTotalLength();
+    p.classList.add('lit');
+    if(soft){ res(); return; }
+    tok.classList.add('on');
+    const t0 = performance.now();
+    (function step(t){
+      const k = Math.min((t-t0)/ms,1), pt = p.getPointAtLength(L*k);
+      tok.setAttribute('cx', pt.x); tok.setAttribute('cy', pt.y);
+      if(k<1 && run) requestAnimationFrame(step);
+      else { tok.classList.remove('on'); res(); }
+    })(t0);
+  });
+}
+document.getElementById('play').addEventListener('click', async ()=>{
+  if(run) return; run = true;
+  document.querySelectorAll('.edge').forEach(e=>e.classList.remove('lit'));
+  document.querySelectorAll('.node').forEach(n=>n.classList.remove('sel'));
+  for(const s of SEQ){
+    if(!run) break;
+    if(s.n){ pick(s.n); await hold(soft?100:540); }
+    else{
+      if(s.an) document.getElementById(s.an).classList.add('sel');
+      if(s.also) document.getElementById(s.also).classList.add('lit');
+      await glide(s.e, soft?50:460);
+    }
+  }
+  run = false;
+});
+
+const PBI_U = 14, APP_U = 20;
+let rate = 0.40;
+const K = ['wh','dh','hj','inf','pbi','app'];
+const fmt = n => '$' + n.toLocaleString('en-US',{maximumFractionDigits:0});
+
+document.querySelectorAll('#seg button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('#seg button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    rate = parseFloat(b.dataset.r);
+    calc();
+  });
+});
+
+function calc(){
+  const g = id => parseFloat(document.getElementById('r-'+id).value);
+  const wh=g('wh'), dh=g('dh'), hj=g('hj'), inf=g('inf'), pbi=g('pbi'), app=g('app');
+  K.forEach(k=>document.getElementById('v-'+k).textContent = g(k));
+
+  const dbuWh = wh * dh * rate;
+  const dbuJob = hj * dh * rate;
+  const items = [
+    ['DBU warehouse', dbuWh, 'var(--red)'],
+    ['DBU job', dbuJob, 'var(--amber)'],
+    ['Infra de nube', (dbuWh + dbuJob) * inf/100, '#7A5AD8'],
+    ['Power BI', pbi * PBI_U, '#5A5A6A'],
+    ['Power Apps', app * APP_U, '#8A8A9A']
+  ];
+  const tot = items.reduce((a,[,v])=>a+v, 0);
+  document.getElementById('o-mes').textContent = fmt(tot);
+  document.getElementById('o-anio').textContent = 'USD al mes · ' + fmt(tot*12) + ' al año';
+  document.getElementById('o-bar').innerHTML = items
+    .map(([,v,c])=>`<i style="width:${tot?v/tot*100:0}%; background:${c}"></i>`).join('');
+  document.getElementById('o-brk').innerHTML = items
+    .map(([k,v])=>`<div><span>${k}</span><span>${fmt(v)}</span></div>`).join('');
+}
+K.forEach(k=>document.getElementById('r-'+k).addEventListener('input', calc));
+calc();
+</script>
