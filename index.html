@@ -8,18 +8,18 @@
 :root{
   --page:#FFFFFF; --ink:#1D1D1F; --ink2:#6E6E73; --line:#D2D2D7;
   --red:#F40009; --redink:#C7000A;
-  --t-gray:#F5F5F7; --t-blue:#E3EEF8; --t-red:#FBEAEA; --t-white:#FFFFFF; --t-sand:#F4F0EA;
+  --t-gray:#F5F5F7; --t-solid:#D00009;
   --d-bg:#000000; --d-card:#1A1A1C; --d-ink:#F5F5F7; --d-ink2:#A1A1A6; --d-line:#2C2C31; --d-red:#FF4A50;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --page:#000000; --ink:#F5F5F7; --ink2:#A1A1A6; --line:#2C2C31;
   --red:#FF4A50; --redink:#FF6A6F;
-  --t-gray:#141416; --t-blue:#101820; --t-red:#1E0C0D; --t-white:#141416; --t-sand:#181613;
+  --t-gray:#141416; --t-solid:#D00009;
 }}
 :root[data-theme="dark"]{
   --page:#000000; --ink:#F5F5F7; --ink2:#A1A1A6; --line:#2C2C31;
   --red:#FF4A50; --redink:#FF6A6F;
-  --t-gray:#141416; --t-blue:#101820; --t-red:#1E0C0D; --t-white:#141416; --t-sand:#181613;
+  --t-gray:#141416; --t-solid:#D00009;
 }
 
 *{box-sizing:border-box}
@@ -74,12 +74,15 @@ h1,h2,h3{margin:0; font-weight:800; letter-spacing:-.03em; text-wrap:balance; li
 .tile.w4{grid-column:span 4}
 .tile.w6{grid-column:span 6}
 .tile.gray{background:var(--t-gray)}
-.tile.blue{background:var(--t-blue)}
-.tile.redt{background:var(--t-red)}
-.tile.sand{background:var(--t-sand)}
 .tile.dark{background:var(--d-bg); color:var(--d-ink)}
 .tile.dark .sub,.tile.dark .foot{color:var(--d-ink2)}
 .tile.dark h3{color:var(--d-ink)}
+.tile.solid{background:var(--t-solid); color:#fff}
+.tile.solid h3,.tile.solid .big{color:#fff}
+.tile.solid .kick{color:rgba(255,255,255,.85)}
+.tile.solid .sub{color:rgba(255,255,255,.92)}
+.tile.solid .foot{color:rgba(255,255,255,.82)}
+.tile.solid .chip{background:rgba(255,255,255,.18); color:#fff}
 .tile .kick{font-size:14px; font-weight:700; color:var(--redink); margin:0 0 12px}
 .tile.dark .kick{color:var(--d-red)}
 .tile h3{font-size:clamp(26px,3.3vw,42px); letter-spacing:-.032em; max-width:20ch}
@@ -254,7 +257,7 @@ footer p{margin:0 0 8px}
       <p class="sub">Validar antes de entregar, no auditar después.</p>
       <p class="foot">Que los productos entregados correspondan con las condiciones de cada establecimiento.</p>
     </div>
-    <div class="tile redt rv">
+    <div class="tile solid rv">
       <p class="kick">El obstáculo</p>
       <h3>La información vive separada</h3>
       <p class="sub">Ventas, clientes y portafolio están en bases distintas.</p>
@@ -274,7 +277,7 @@ footer p{margin:0 0 8px}
 </div>
 <div class="wrap">
   <div class="mosaic">
-    <div class="tile blue rv">
+    <div class="tile gray rv">
       <p class="kick">Primaria</p>
       <h3>Solo hidratación simple y alimento</h3>
       <div class="chips">
@@ -305,10 +308,10 @@ footer p{margin:0 0 8px}
 </div>
 <div class="wrap">
   <div class="mosaic">
-    <div class="tile w2 redt rv"><p class="kick">Caso 01</p><h3>Producto restringido</h3>
+    <div class="tile w2 gray rv"><p class="kick">Caso 01</p><h3>Producto restringido</h3>
       <span class="big">01</span>
       <p class="foot">Venta de un producto que no está en el portafolio autorizado para ese tipo de establecimiento.</p></div>
-    <div class="tile w2 sand rv"><p class="kick">Caso 02</p><h3>Venta con bloqueo activo</h3>
+    <div class="tile w2 gray rv"><p class="kick">Caso 02</p><h3>Venta con bloqueo activo</h3>
       <span class="big">02</span>
       <p class="foot">Operación realizada después de que el cliente debía tener un bloqueo vigente.</p></div>
     <div class="tile w2 gray rv"><p class="kick">Caso 03</p><h3>Cambio de clasificación</h3>
@@ -331,7 +334,7 @@ footer p{margin:0 0 8px}
       <p class="foot">Mes, cliente, canal, unidad operativa, SKU, marca, volumen e importe de cada operación.</p></div>
     <div class="tile w2 gray rv"><p class="kick">A quién se le vendió</p><h3>Maestro de clientes</h3>
       <p class="foot">Nombre, canal y subcanal, región, estatus y bloqueos de cada establecimiento registrado.</p></div>
-    <div class="tile w2 redt rv"><p class="kick">Qué estaba permitido</p><h3>Portafolio autorizado</h3>
+    <div class="tile w2 dark rv"><p class="kick">Qué estaba permitido</p><h3>Portafolio autorizado</h3>
       <p class="foot">La matriz de productos elegibles según el tipo de institución educativa.</p></div>
   </div>
 </div>
@@ -460,7 +463,7 @@ footer p{margin:0 0 8px}
 </div>
 <div class="wrap">
   <div class="mosaic">
-    <div class="tile w4 redt rv"><p class="kick">Comercial</p><h3>Impacto financiero del incumplimiento</h3>
+    <div class="tile w4 solid rv"><p class="kick">Comercial</p><h3>Impacto financiero del incumplimiento</h3>
       <p class="sub">Valor monetario acumulado de las colocaciones de producto restringido en el canal educativo.</p>
       <p class="foot">Dimensiona la exposición económica y localiza los focos de riesgo por unidad de negocio o zona geográfica.</p></div>
     <div class="tile w2 gray rv"><p class="kick">Comercial</p><h3>% Cumplimiento de portafolio</h3>
