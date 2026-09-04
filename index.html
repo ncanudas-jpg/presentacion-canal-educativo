@@ -188,6 +188,7 @@ svg.flow{display:block; width:100%; height:100%; max-width:1400px; margin:0 auto
 .seg button em{display:block; font-style:normal; font-size:13px; font-weight:600; opacity:.72; margin-top:5px}
 .seg button.on{background:var(--red); border-color:var(--red); color:#fff}
 .knob{margin-bottom:24px} .knob:last-child{margin-bottom:0}
+.knobs .hint{font-size:14.5px; color:var(--ink2); margin:26px 0 0; line-height:1.5}
 .knob label{display:flex; justify-content:space-between; align-items:baseline; gap:16px; font-size:16.5px;
   color:var(--ink2); margin-bottom:11px; font-weight:500}
 .knob label b{font-size:19px; font-weight:800; color:var(--ink); letter-spacing:-.025em}
@@ -197,10 +198,8 @@ input[type=range]{width:100%; accent-color:var(--red); height:22px}
 .out .t{font-size:14px; font-weight:700; color:var(--d-red); margin:0 0 16px}
 .out .big{font-size:clamp(44px,5.6vw,62px); font-weight:800; letter-spacing:-.045em; line-height:1}
 .out .sub{font-size:15.5px; color:var(--d-ink2); margin:9px 0 0}
-.mb{height:10px; border-radius:99px; overflow:hidden; display:flex; margin:28px 0 20px; background:#2C2C31}
-.mb i{height:100%; transition:width .5s cubic-bezier(.2,.8,.2,1)}
 .brk{display:grid; gap:12px}
-.brk div{display:flex; justify-content:space-between; gap:12px; font-size:15.5px; color:var(--d-ink2)}
+.brk div{display:flex; justify-content:space-between; gap:12px; font-size:15.5px; color:var(--d-ink2); padding:9px 0; border-top:1px solid var(--d-line)}
 .brk div span:last-child{font-weight:700; color:var(--d-ink)}
 .note{font-size:16px; color:var(--ink2); margin:36px auto 0; max-width:78ch; line-height:1.58; text-align:center}
 .note b{color:var(--ink); font-weight:700}
@@ -509,22 +508,20 @@ footer p{margin:0 0 8px}
         <button data-r="0.40" class="on">Standard<em>$0.40 / DBU-h</em></button>
         <button data-r="0.55">Premium<em>$0.55 / DBU-h</em></button>
       </div>
-      <div class="knob"><label>Horas/mes de warehouse activo <i>DirectQuery</i> <b id="v-wh">160</b></label><input type="range" id="r-wh" min="0" max="400" step="10" value="160"></div>
-      <div class="knob"><label>DBU por hora del clúster <b id="v-dh">8</b></label><input type="range" id="r-dh" min="1" max="40" step="1" value="8"></div>
-      <div class="knob"><label>Horas/mes de ejecución del job <b id="v-hj">10</b></label><input type="range" id="r-hj" min="1" max="120" step="1" value="10"></div>
-      <div class="knob"><label>Infraestructura de nube <i>% sobre DBU</i> <b id="v-inf">60</b></label><input type="range" id="r-inf" min="0" max="150" step="5" value="60"></div>
-      <div class="knob"><label>Usuarios de Power BI <b id="v-pbi">15</b></label><input type="range" id="r-pbi" min="0" max="80" step="1" value="15"></div>
-      <div class="knob"><label>Usuarios de Power Apps <b id="v-app">8</b></label><input type="range" id="r-app" min="0" max="40" step="1" value="8"></div>
+      <div class="knob"><label>Horas de ejecución al mes <b id="v-hj">15</b></label>
+        <input type="range" id="r-hj" min="1" max="200" step="1" value="15"></div>
+      <div class="knob"><label>DBU por hora del clúster <b id="v-dh">8</b></label>
+        <input type="range" id="r-dh" min="1" max="40" step="1" value="8"></div>
+      <p class="hint">El tamaño del clúster determina cuántas DBU consume por hora. Un clúster chico ronda las 8; uno grande puede pasar de 30.</p>
     </div>
     <div class="out">
-      <p class="t">Recurrente estimado</p>
+      <p class="t">Cómputo del job</p>
       <div class="big tnum" id="o-mes">$0</div>
       <p class="sub" id="o-sub">—</p>
-      <div class="mb" id="o-bar"></div>
       <div class="brk tnum" id="o-brk"></div>
     </div>
   </div>
-  <p class="note rv"><b>Databricks cobra dos cosas por separado.</b> Las DBU se tarifan por edición; encima de eso el proveedor de nube factura aparte las máquinas virtuales, el disco y la red del clúster. <b>El supuesto que domina es el primero:</b> con DirectQuery el warehouse se cobra cada vez que alguien usa el tablero. Power BI y Microsoft 365 ya existen en la organización. Tarifas de referencia editables, no precios cotizados.</p>
+  <p class="note rv"><b>Esto cubre solo el cómputo del job.</b> Databricks cobra el procesamiento en DBU y lo tarifa por edición — Standard cerca de $0.40 y Premium cerca de $0.55 USD por DBU-hora. Encima de eso, el proveedor de nube factura aparte las máquinas virtuales, el disco y la red del clúster, y las licencias de Power BI y Power Apps se cubren con lo que la organización ya tiene contratado. Tarifas de referencia, no precios cotizados.</p>
 </div>
 
 <!-- ===== CIERRE ===== -->
@@ -550,11 +547,11 @@ footer p{margin:0 0 8px}
 const soft = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $ = id => document.getElementById(id);
 
-/* ===== estimador (primero: countUp lo necesita) ===== */
-const PBI_U = 14, APP_U = 20;
-let rate = 0.40, lastTotal = 0, counted = false;
-const K = ['wh','dh','hj','inf','pbi','app'];
-const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+/* ===== estimador: tiempo de ejecucion x DBU ===== */
+let rate = 0.40, lastTotal = 0, counted = false, pending = false;
+const fmt  = n => '$' + Math.round(n).toLocaleString('en-US');
+const fmt2 = n => '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+
 document.querySelectorAll('#seg button').forEach(b=>{
   b.addEventListener('click', ()=>{
     document.querySelectorAll('#seg button').forEach(x=>x.classList.remove('on'));
@@ -562,27 +559,28 @@ document.querySelectorAll('#seg button').forEach(b=>{
   });
 });
 function calc(live){
-  const g = id => parseFloat($('r-'+id).value);
-  const wh=g('wh'), dh=g('dh'), hj=g('hj'), inf=g('inf'), pbi=g('pbi'), app=g('app');
-  K.forEach(k=>$('v-'+k).textContent = g(k));
-  const dbuWh = wh*dh*rate, dbuJob = hj*dh*rate;
-  const items = [
-    ['DBU warehouse', dbuWh, 'var(--d-red)'],
-    ['DBU job', dbuJob, '#FFB020'],
-    ['Infra de nube', (dbuWh+dbuJob)*inf/100, '#7A6AE0'],
-    ['Power BI', pbi*PBI_U, '#5A5A62'],
-    ['Power Apps', app*APP_U, '#8A8A94']
-  ];
-  lastTotal = items.reduce((a,[,v])=>a+v, 0);
-  if(live || counted) $('o-mes').textContent = fmt(lastTotal);
+  const hj = parseFloat($('r-hj').value), dh = parseFloat($('r-dh').value);
+  $('v-hj').textContent = hj; $('v-dh').textContent = dh;
+  const dbu = hj * dh;
+  lastTotal = dbu * rate;
+  if(live || counted || !pending) $('o-mes').textContent = fmt(lastTotal);
   $('o-sub').textContent = 'USD al mes · ' + fmt(lastTotal*12) + ' al año';
-  $('o-bar').innerHTML = items.map(([,v,c])=>`<i style="width:${lastTotal?v/lastTotal*100:0}%; background:${c}"></i>`).join('');
-  $('o-brk').innerHTML = items.map(([k,v])=>`<div><span>${k}</span><span>${fmt(v)}</span></div>`).join('');
+  $('o-brk').innerHTML = [
+    ['Horas de ejecución', hj + ' h'],
+    ['DBU por hora', dh],
+    ['DBU-hora al mes', dbu.toLocaleString('en-US')],
+    ['Tarifa por DBU-hora', fmt2(rate)]
+  ].map(([k,v])=>`<div><span>${k}</span><span>${v}</span></div>`).join('');
 }
-K.forEach(k=>$('r-'+k).addEventListener('input', ()=>calc(true)));
+['hj','dh'].forEach(k=>$('r-'+k).addEventListener('input', ()=>calc(true)));
 calc(false);
+{ // si ya se ve al cargar, se deja el numero puesto en vez de esperar la animacion
+  const r = $('est').getBoundingClientRect();
+  pending = !soft && r.top > innerHeight * 0.9;
+  if(!pending) $('o-mes').textContent = fmt(lastTotal);
+}
 function countUp(){
-  if(counted) return; counted = true;
+  if(counted) return; counted = true; pending = false;
   const el = $('o-mes'), target = lastTotal;
   if(soft){ el.textContent = fmt(target); return; }
   const t0 = performance.now(), ms = 950;
