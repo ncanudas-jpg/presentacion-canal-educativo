@@ -6,20 +6,21 @@
 
 <style>
 :root{
-  --page:#FFFFFF; --ink:#1D1D1F; --ink2:#6E6E73; --line:#D2D2D7;
-  --red:#F40009; --redink:#C7000A;
-  --t-gray:#F5F5F7; --t-solid:#D00009;
-  --d-bg:#000000; --d-card:#1A1A1C; --d-ink:#F5F5F7; --d-ink2:#A1A1A6; --d-line:#2C2C31; --d-red:#FF4A50;
+  --page:#FFFAF6; --ink:#090909; --ink2:#6E6E73; --line:#E8E8E8;
+  --red:#E50914; --redink:#C10710;
+  --t-gray:#F5F5F5; --t-solid:#E50914;
+  --green:#20A464; --orange:#FF7A00;
+  --d-bg:#090909; --d-card:#191919; --d-ink:#FFFAF6; --d-ink2:#A5A2A0; --d-line:#2A2A2A; --d-red:#FF5A61;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --page:#000000; --ink:#F5F5F7; --ink2:#A1A1A6; --line:#2C2C31;
-  --red:#FF4A50; --redink:#FF6A6F;
-  --t-gray:#141416; --t-solid:#D00009;
+  --page:#090909; --ink:#FFFAF6; --ink2:#A5A2A0; --line:#2A2A2A;
+  --red:#FF5A61; --redink:#FF7A80;
+  --t-gray:#151515; --t-solid:#C10710;
 }}
 :root[data-theme="dark"]{
-  --page:#000000; --ink:#F5F5F7; --ink2:#A1A1A6; --line:#2C2C31;
-  --red:#FF4A50; --redink:#FF6A6F;
-  --t-gray:#141416; --t-solid:#D00009;
+  --page:#090909; --ink:#FFFAF6; --ink2:#A5A2A0; --line:#2A2A2A;
+  --red:#FF5A61; --redink:#FF7A80;
+  --t-gray:#151515; --t-solid:#C10710;
 }
 
 *{box-sizing:border-box}
@@ -156,7 +157,7 @@ svg.flow{display:block; width:100%; height:100%; max-width:1400px; margin:0 auto
 .spark i{flex:1; background:#33333A; border-radius:3px 3px 0 0; height:0; transition:height .95s cubic-bezier(.2,.8,.2,1)}
 .spark i.hot{background:var(--red)}
 .st{font-size:11px; font-weight:700; padding:4px 11px; border-radius:99px}
-.st.a{background:#2A0C0E; color:#FF7A7E} .st.b{background:#2C2208; color:#E5B45C} .st.c{background:#0A2A1E; color:#5FC79A}
+.st.a{background:#2E0A0D; color:#FF5A61} .st.b{background:#2E1C06; color:#FF9A3C} .st.c{background:#0A2418; color:#3FCB88}
 .arow time{font-size:12px; color:var(--d-ink2); opacity:.7}
 
 /* ---------- KPI con detalle ---------- */
@@ -284,21 +285,20 @@ footer p{margin:0 0 8px}
     <div class="tile w6 dark rv">
       <p class="kick">Problemática</p>
       <h3>El control llega después de la entrega</h3>
-      <p class="sub">No basta con saber qué cliente compró. Hay que saber qué tipo de establecimiento es y qué productos tiene autorizados.</p>
-      <p class="foot">Hoy esa verificación ocurre cuando la venta ya se hizo — y el producto ya se consumió.</p>
+      <p class="sub">No basta con saber qué cliente compró: hay que saber qué tipo de plantel es y qué tiene autorizado.</p>
+      <p class="foot">Cuando se detecta, el producto ya se consumió.</p>
     </div>
     <div class="tile gray rv">
       <p class="kick">El reto</p>
       <h3>Controlar de forma preventiva</h3>
       <p class="sub">Validar antes de entregar, no auditar después.</p>
-      <p class="foot">Que los productos entregados correspondan con las condiciones de cada establecimiento.</p>
     </div>
     <div class="tile solid rv">
       <p class="kick">El obstáculo</p>
       <h3>La información vive separada</h3>
-      <p class="sub">Ventas, clientes y portafolio están en bases distintas.</p>
+      <p class="sub">Ventas, clientes y portafolio, en bases distintas.</p>
       <span class="big">3</span>
-      <p class="foot">Mientras se cruzan a mano, el análisis será siempre posterior.</p>
+      <p class="foot">Cruzarlas a mano vuelve el análisis siempre posterior.</p>
     </div>
   </div>
 </div>
@@ -308,7 +308,7 @@ footer p{margin:0 0 8px}
   <div class="wrap">
     <p class="eyebrow rv">El criterio</p>
     <h2>Dos reglas distintas<br>en un mismo canal</h2>
-    <p class="rv">El portafolio permitido cambia según el nivel del plantel. La misma venta puede ser correcta en uno e infracción en otro.</p>
+    <p class="rv">La misma venta puede ser correcta en un plantel e infracción en otro.</p>
   </div>
 </div>
 <div class="wrap">
@@ -321,7 +321,7 @@ footer p{margin:0 0 8px}
         <span class="chip si">Ades</span>
         <span class="chip si">Alimentos VTM</span>
       </div>
-      <p class="foot">Las aguas saborizadas quedan fuera: contienen edulcorantes o azúcar añadida, y por eso su venta no está permitida.</p>
+      <p class="foot">Las saborizadas quedan fuera: llevan edulcorantes o azúcar añadida.</p>
     </div>
     <div class="tile dark rv">
       <p class="kick">Colegios y otros educativos</p>
@@ -330,7 +330,7 @@ footer p{margin:0 0 8px}
         <span class="chip no">Bebidas alcohólicas</span>
         <span class="chip no">Bebidas energizantes</span>
       </div>
-      <p class="foot">Todo lo demás del catálogo está autorizado para este segmento.</p>
+      <p class="foot">El resto del catálogo, autorizado.</p>
     </div>
   </div>
 </div>
@@ -346,13 +346,13 @@ footer p{margin:0 0 8px}
   <div class="mosaic">
     <div class="tile w2 gray rv"><p class="kick">Caso 01</p><h3>Producto restringido</h3>
       <span class="big">01</span>
-      <p class="foot">Venta de un producto que no está en el portafolio autorizado para ese tipo de establecimiento.</p></div>
+      <p class="foot">Fuera del portafolio autorizado para ese plantel.</p></div>
     <div class="tile w2 gray rv"><p class="kick">Caso 02</p><h3>Venta con bloqueo activo</h3>
       <span class="big">02</span>
-      <p class="foot">Operación realizada después de que el cliente debía tener un bloqueo vigente.</p></div>
+      <p class="foot">Venta posterior a un bloqueo que debía estar vigente.</p></div>
     <div class="tile w2 gray rv"><p class="kick">Caso 03</p><h3>Cambio de clasificación</h3>
       <span class="big">03</span>
-      <p class="foot">Modificación del canal del cliente justo antes de una compra que de otro modo no estaría permitida.</p></div>
+      <p class="foot">Cambio de canal justo antes de una compra no permitida.</p></div>
   </div>
 </div>
 
@@ -370,13 +370,13 @@ footer p{margin:0 0 8px}
       <h3>Impacto financiero del incumplimiento</h3>
       <dl>
         <dt>Qué mide</dt>
-        <dd>El valor monetario acumulado de las colocaciones de producto restringido en el canal educativo.</dd>
+        <dd>El valor de las colocaciones de producto restringido en canal educativo.</dd>
         <dt>Para qué sirve</dt>
-        <dd>Dimensiona la exposición económica del desvío y ordena la atención: permite ver qué unidad de negocio o zona geográfica concentra el riesgo, y por lo tanto dónde conviene auditar primero.</dd>
+        <dd>Dimensiona la exposición y muestra qué zona concentra el riesgo — dónde auditar primero.</dd>
         <dt>Cómo se calcula</dt>
         <dd><span class="f">Σ importe · canal educativo · producto no autorizado</span></dd>
         <dt>Cortes de análisis</dt>
-        <dd>Unidad operativa, región, periodo, marca y nivel del plantel.</dd>
+        <dd>Unidad operativa, región, periodo y nivel del plantel.</dd>
       </dl>
     </div>
     <div class="tile w3 gray kpi rv">
@@ -384,13 +384,13 @@ footer p{margin:0 0 8px}
       <h3>% Cumplimiento de portafolio</h3>
       <dl>
         <dt>Qué mide</dt>
-        <dd>La proporción de ventas alineadas al catálogo autorizado contra el total facturado al sector escolar.</dd>
+        <dd>Ventas conformes contra el total facturado al sector escolar.</dd>
         <dt>Para qué sirve</dt>
-        <dd>Evalúa la adherencia a la política en cada planta o centro de distribución. Al ser un porcentaje, permite comparar centros de tamaños distintos entre sí — algo que el conteo absoluto de incumplimientos no permite.</dd>
+        <dd>Al ser porcentaje, permite comparar centros de tamaños distintos entre sí.</dd>
         <dt>Cómo se calcula</dt>
         <dd><span class="f">ventas conformes ÷ total ventas educativas × 100</span></dd>
         <dt>Meta</dt>
-        <dd>100%. Cualquier valor por debajo tiene un incumplimiento identificable detrás, con cliente, producto y fecha.</dd>
+        <dd>100%. Debajo de eso hay un incumplimiento con cliente, producto y fecha.</dd>
       </dl>
     </div>
   </div>
@@ -401,7 +401,7 @@ footer p{margin:0 0 8px}
   <div class="wrap">
     <p class="eyebrow rv" style="color:var(--d-red)">La solución</p>
     <h2 style="color:var(--d-ink)">Un flujo, sin<br>intervención manual</h2>
-    <p class="rv" style="color:var(--d-ink2)">De SAP a la persona que atiende. Sigue bajando y el proceso se arma paso por paso.</p>
+    <p class="rv" style="color:var(--d-ink2)">Sigue bajando: el proceso se arma paso por paso.</p>
   </div>
 </div>
 <section class="flowsec" id="flowsec">
@@ -490,7 +490,7 @@ footer p{margin:0 0 8px}
   <div class="wrap">
     <p class="eyebrow rv" style="color:var(--d-red)">El paso final</p>
     <h2 style="color:var(--d-ink)">Ver, atender y cerrar<br>en un solo lugar</h2>
-    <p class="rv" style="color:var(--d-ink2)">Una sola aplicación con los indicadores, sus alertas y el estatus de cada una.</p>
+    <p class="rv" style="color:var(--d-ink2)">Indicadores, alertas y estatus en una sola aplicación.</p>
   </div>
 </div>
 <section style="background:var(--d-bg); padding:0 22px 124px">
@@ -542,7 +542,7 @@ footer p{margin:0 0 8px}
       </div>
     </div>
   </div>
-  <p class="note rv" style="color:var(--d-ink2); max-width:62ch">El estatus escribe de vuelta: es la evidencia de que el control operó, no solo de que se detectó.</p>
+  <p class="note rv" style="color:var(--d-ink2); max-width:62ch">El estatus escribe de vuelta: evidencia de que el control operó.</p>
 </section>
 
 <!-- ===== POR QUÉ ===== -->
@@ -570,7 +570,7 @@ footer p{margin:0 0 8px}
   <div class="wrap">
     <p class="eyebrow rv">Costos</p>
     <h2>La estructura,<br>no una cifra</h2>
-    <p class="rv">Mueve los supuestos y observa cómo responde el costo. Es la forma honesta de discutir presupuesto antes de tener tarifas negociadas.</p>
+    <p class="rv">Mueve los supuestos y observa cómo responde el costo.</p>
   </div>
 </div>
 <div class="wrap" style="padding-bottom:120px">
