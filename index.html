@@ -227,9 +227,12 @@ tr.arow{opacity:0; transform:translateX(18px); transition:opacity .6s, transform
 .mock.in tr.arow{opacity:1; transform:none}
 
 /* ---------- prototipo de la app ---------- */
-.mock-in{min-height:560px}
-.ap-body{display:flex; flex-direction:column; min-height:560px; position:relative}
-@media (max-width:800px){.mock-in,.ap-body{min-height:0}}
+.mock-in{min-height:0}
+.ap-body{display:flex; flex-direction:column; height:700px; position:relative; overflow:hidden}
+.ap-view.on{flex:1; min-height:0; overflow-y:auto}
+.ap-view.on::-webkit-scrollbar{width:8px}
+.ap-view.on::-webkit-scrollbar-thumb{background:var(--line); border-radius:99px}
+@media (max-width:800px){.ap-body{height:auto; overflow:visible} .ap-view.on{overflow:visible}}
 .ap-top{display:flex; align-items:center; gap:14px; padding:16px 26px; border-bottom:1px solid var(--line); background:var(--page)}
 .ap-top h5{margin:0; font-size:19px; font-weight:800; letter-spacing:-.02em; color:var(--ink)}
 .ap-top .sp{flex:1}
