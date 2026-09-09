@@ -227,6 +227,31 @@ image.dbx-d{display:none}
 tr.arow{opacity:0; transform:translateX(18px); transition:opacity .6s, transform .6s}
 .mock.in tr.arow{opacity:1; transform:none}
 
+/* ---------- prototipo de la app ---------- */
+.mk-nav a{cursor:pointer; user-select:none}
+.ap-view{display:none} .ap-view.on{display:block}
+.ap-fil{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px}
+.ap-fil button{font-family:Manrope,sans-serif; font-size:14px; font-weight:700; cursor:pointer;
+  padding:9px 16px; border-radius:99px; border:1px solid var(--line); background:var(--page); color:var(--ink2)}
+.ap-fil button.on{background:var(--ink); border-color:var(--ink); color:var(--page)}
+.ap-fil b{margin-left:6px; opacity:.65; font-weight:700}
+.st{cursor:pointer; border:none; font-family:Manrope,sans-serif; transition:transform .15s}
+.st:hover{transform:scale(1.06)}
+.ap-hint{font-size:13.5px; color:var(--ink2); margin:16px 0 0; display:flex; align-items:center; gap:7px}
+.ap-hint i{width:7px; height:7px; border-radius:50%; background:var(--red); font-style:normal;
+  animation:lat 1.8s ease-in-out infinite}
+@keyframes lat{0%,100%{opacity:1}50%{opacity:.25}}
+.ap-toast{position:absolute; right:22px; bottom:22px; background:var(--ink); color:var(--page);
+  font-size:14px; font-weight:600; padding:12px 18px; border-radius:10px; opacity:0; transform:translateY(10px);
+  transition:opacity .3s, transform .3s; pointer-events:none; z-index:5}
+.ap-toast.on{opacity:1; transform:none}
+.mock{position:relative}
+.ap-ok{color:#12684A; font-weight:800} .ap-no{color:var(--redink); font-weight:800}
+.spark i{cursor:default; position:relative}
+.kt b.live{color:var(--ink)}
+.kt b.warn{color:var(--redink)}
+@media (prefers-reduced-motion:reduce){.ap-hint i{animation:none}}
+
 /* ---------- por que ---------- */
 .whysec{display:grid; grid-template-columns:.85fr 1.3fr; gap:clamp(28px,5vw,86px); align-items:start; padding:24px 0 120px}
 @media (max-width:900px){.whysec{grid-template-columns:1fr; padding-bottom:80px}}
@@ -598,37 +623,57 @@ footer p{margin:0 0 8px}
         <a href="#" onclick="return false"><i></i>Clientes</a>
         <a href="#" onclick="return false"><i></i>Portafolio</a>
       </nav>
-      <div>
-        <div class="mk-sect">
-          <h4><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNjMwcHgiIGhlaWdodD0iNjMwcHgiIHZpZXdCb3g9IjAgMCA2MzAgNjMwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA1My4yICg3MjY0MykgLSBodHRwczovL3NrZXRjaGFwcC5jb20gLS0+CiAgICA8dGl0bGU+UEJJIExvZ288L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZGVmcz4KICAgICAgICA8bGluZWFyR3JhZGllbnQgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSIgaWQ9ImxpbmVhckdyYWRpZW50LTEiPgogICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjRUJCQjE0IiBvZmZzZXQ9IjAlIj48L3N0b3A+CiAgICAgICAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiNCMjU0MDAiIG9mZnNldD0iMTAwJSI+PC9zdG9wPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiIGlkPSJsaW5lYXJHcmFkaWVudC0yIj4KICAgICAgICAgICAgPHN0b3Agc3RvcC1jb2xvcj0iI0Y5RTU4MyIgb2Zmc2V0PSIwJSI+PC9zdG9wPgogICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjREU5ODAwIiBvZmZzZXQ9IjEwMCUiPjwvc3RvcD4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICAgIDxwYXRoIGQ9Ik0zNDYsNjA0IEwzNDYsNjMwIEwzMjAsNjMwIEwxNTMsNjMwIEMxMzguNjQwNTk3LDYzMCAxMjcsNjE4LjM1OTQwMyAxMjcsNjA0IEwxMjcsMTgzIEMxMjcsMTY4LjY0MDU5NyAxMzguNjQwNTk3LDE1NyAxNTMsMTU3IEwzMjAsMTU3IEMzMzQuMzU5NDAzLDE1NyAzNDYsMTY4LjY0MDU5NyAzNDYsMTgzIEwzNDYsNjA0IFoiIGlkPSJwYXRoLTMiPjwvcGF0aD4KICAgICAgICA8ZmlsdGVyIHg9Ii05LjElIiB5PSItNi4zJSIgd2lkdGg9IjEzNi41JSIgaGVpZ2h0PSIxMTYuOSUiIGZpbHRlclVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgaWQ9ImZpbHRlci00Ij4KICAgICAgICAgICAgPGZlT2Zmc2V0IGR4PSIyMCIgZHk9IjEwIiBpbj0iU291cmNlQWxwaGEiIHJlc3VsdD0ic2hhZG93T2Zmc2V0T3V0ZXIxIj48L2ZlT2Zmc2V0PgogICAgICAgICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIxMCIgaW49InNoYWRvd09mZnNldE91dGVyMSIgcmVzdWx0PSJzaGFkb3dCbHVyT3V0ZXIxIj48L2ZlR2F1c3NpYW5CbHVyPgogICAgICAgICAgICA8ZmVDb2xvck1hdHJpeCB2YWx1ZXM9IjAgMCAwIDAgMCAgIDAgMCAwIDAgMCAgIDAgMCAwIDAgMCAgMCAwIDAgMC4wNTMwMjExOTc2IDAiIHR5cGU9Im1hdHJpeCIgaW49InNoYWRvd0JsdXJPdXRlcjEiPjwvZmVDb2xvck1hdHJpeD4KICAgICAgICA8L2ZpbHRlcj4KICAgICAgICA8bGluZWFyR3JhZGllbnQgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSIgaWQ9ImxpbmVhckdyYWRpZW50LTUiPgogICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjRjlFNjhCIiBvZmZzZXQ9IjAlIj48L3N0b3A+CiAgICAgICAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiNGM0NEMzIiIG9mZnNldD0iMTAwJSI+PC9zdG9wPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8ZyBpZD0iUEJJLUxvZ28iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzcuNTAwMDAwLCAwLjAwMDAwMCkiPgogICAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlIiBmaWxsPSJ1cmwoI2xpbmVhckdyYWRpZW50LTEpIiB4PSIyNTYiIHk9IjAiIHdpZHRoPSIyMTkiIGhlaWdodD0iNjMwIiByeD0iMjYiPjwvcmVjdD4KICAgICAgICAgICAgPGcgaWQ9IkNvbWJpbmVkLVNoYXBlIj4KICAgICAgICAgICAgICAgIDx1c2UgZmlsbD0iYmxhY2siIGZpbGwtb3BhY2l0eT0iMSIgZmlsdGVyPSJ1cmwoI2ZpbHRlci00KSIgeGxpbms6aHJlZj0iI3BhdGgtMyI+PC91c2U+CiAgICAgICAgICAgICAgICA8dXNlIGZpbGw9InVybCgjbGluZWFyR3JhZGllbnQtMikiIGZpbGwtcnVsZT0iZXZlbm9kZCIgeGxpbms6aHJlZj0iI3BhdGgtMyI+PC91c2U+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPHBhdGggZD0iTTIxOSw2MDQgTDIxOSw2MzAgTDE5Myw2MzAgTDI2LDYzMCBDMTEuNjQwNTk2NSw2MzAgMS43NTg1MTk3NWUtMTUsNjE4LjM1OTQwMyAwLDYwNCBMMCwzNDEgQy0xLjc1ODUxOTc1ZS0xNSwzMjYuNjQwNTk3IDExLjY0MDU5NjUsMzE1IDI2LDMxNSBMMTkzLDMxNSBDMjA3LjM1OTQwMywzMTUgMjE5LDMyNi42NDA1OTcgMjE5LDM0MSBMMjE5LDYwNCBaIiBpZD0iQ29tYmluZWQtU2hhcGUiIGZpbGw9InVybCgjbGluZWFyR3JhZGllbnQtNSkiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==" alt="Power BI">Dashboard<span>incrustado desde Power BI</span></h4>
-          <div class="tiles3">
-            <div class="kt"><b>—</b><span>Impacto financiero</span></div>
-            <div class="kt"><b>—</b><span>% Cumplimiento</span></div>
-            <div class="kt"><b>—</b><span>Incumplimientos del mes</span></div>
+      <div style="position:relative">
+        <!-- DASHBOARD -->
+        <div class="ap-view on" id="v-dash">
+          <div class="mk-sect">
+            <h4><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNjMwcHgiIGhlaWdodD0iNjMwcHgiIHZpZXdCb3g9IjAgMCA2MzAgNjMwIiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA1My4yICg3MjY0MykgLSBodHRwczovL3NrZXRjaGFwcC5jb20gLS0+CiAgICA8dGl0bGU+UEJJIExvZ288L3RpdGxlPgogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+CiAgICA8ZGVmcz4KICAgICAgICA8bGluZWFyR3JhZGllbnQgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSIgaWQ9ImxpbmVhckdyYWRpZW50LTEiPgogICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjRUJCQjE0IiBvZmZzZXQ9IjAlIj48L3N0b3A+CiAgICAgICAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiNCMjU0MDAiIG9mZnNldD0iMTAwJSI+PC9zdG9wPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiIGlkPSJsaW5lYXJHcmFkaWVudC0yIj4KICAgICAgICAgICAgPHN0b3Agc3RvcC1jb2xvcj0iI0Y5RTU4MyIgb2Zmc2V0PSIwJSI+PC9zdG9wPgogICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjREU5ODAwIiBvZmZzZXQ9IjEwMCUiPjwvc3RvcD4KICAgICAgICA8L2xpbmVhckdyYWRpZW50PgogICAgICAgIDxwYXRoIGQ9Ik0zNDYsNjA0IEwzNDYsNjMwIEwzMjAsNjMwIEwxNTMsNjMwIEMxMzguNjQwNTk3LDYzMCAxMjcsNjE4LjM1OTQwMyAxMjcsNjA0IEwxMjcsMTgzIEMxMjcsMTY4LjY0MDU5NyAxMzguNjQwNTk3LDE1NyAxNTMsMTU3IEwzMjAsMTU3IEMzMzQuMzU5NDAzLDE1NyAzNDYsMTY4LjY0MDU5NyAzNDYsMTgzIEwzNDYsNjA0IFoiIGlkPSJwYXRoLTMiPjwvcGF0aD4KICAgICAgICA8ZmlsdGVyIHg9Ii05LjElIiB5PSItNi4zJSIgd2lkdGg9IjEzNi41JSIgaGVpZ2h0PSIxMTYuOSUiIGZpbHRlclVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgaWQ9ImZpbHRlci00Ij4KICAgICAgICAgICAgPGZlT2Zmc2V0IGR4PSIyMCIgZHk9IjEwIiBpbj0iU291cmNlQWxwaGEiIHJlc3VsdD0ic2hhZG93T2Zmc2V0T3V0ZXIxIj48L2ZlT2Zmc2V0PgogICAgICAgICAgICA8ZmVHYXVzc2lhbkJsdXIgc3RkRGV2aWF0aW9uPSIxMCIgaW49InNoYWRvd09mZnNldE91dGVyMSIgcmVzdWx0PSJzaGFkb3dCbHVyT3V0ZXIxIj48L2ZlR2F1c3NpYW5CbHVyPgogICAgICAgICAgICA8ZmVDb2xvck1hdHJpeCB2YWx1ZXM9IjAgMCAwIDAgMCAgIDAgMCAwIDAgMCAgIDAgMCAwIDAgMCAgMCAwIDAgMC4wNTMwMjExOTc2IDAiIHR5cGU9Im1hdHJpeCIgaW49InNoYWRvd0JsdXJPdXRlcjEiPjwvZmVDb2xvck1hdHJpeD4KICAgICAgICA8L2ZpbHRlcj4KICAgICAgICA8bGluZWFyR3JhZGllbnQgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSIgaWQ9ImxpbmVhckdyYWRpZW50LTUiPgogICAgICAgICAgICA8c3RvcCBzdG9wLWNvbG9yPSIjRjlFNjhCIiBvZmZzZXQ9IjAlIj48L3N0b3A+CiAgICAgICAgICAgIDxzdG9wIHN0b3AtY29sb3I9IiNGM0NEMzIiIG9mZnNldD0iMTAwJSI+PC9zdG9wPgogICAgICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8L2RlZnM+CiAgICA8ZyBpZD0iUEJJLUxvZ28iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgICAgIDxnIGlkPSJHcm91cCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzcuNTAwMDAwLCAwLjAwMDAwMCkiPgogICAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlIiBmaWxsPSJ1cmwoI2xpbmVhckdyYWRpZW50LTEpIiB4PSIyNTYiIHk9IjAiIHdpZHRoPSIyMTkiIGhlaWdodD0iNjMwIiByeD0iMjYiPjwvcmVjdD4KICAgICAgICAgICAgPGcgaWQ9IkNvbWJpbmVkLVNoYXBlIj4KICAgICAgICAgICAgICAgIDx1c2UgZmlsbD0iYmxhY2siIGZpbGwtb3BhY2l0eT0iMSIgZmlsdGVyPSJ1cmwoI2ZpbHRlci00KSIgeGxpbms6aHJlZj0iI3BhdGgtMyI+PC91c2U+CiAgICAgICAgICAgICAgICA8dXNlIGZpbGw9InVybCgjbGluZWFyR3JhZGllbnQtMikiIGZpbGwtcnVsZT0iZXZlbm9kZCIgeGxpbms6aHJlZj0iI3BhdGgtMyI+PC91c2U+CiAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgPHBhdGggZD0iTTIxOSw2MDQgTDIxOSw2MzAgTDE5Myw2MzAgTDI2LDYzMCBDMTEuNjQwNTk2NSw2MzAgMS43NTg1MTk3NWUtMTUsNjE4LjM1OTQwMyAwLDYwNCBMMCwzNDEgQy0xLjc1ODUxOTc1ZS0xNSwzMjYuNjQwNTk3IDExLjY0MDU5NjUsMzE1IDI2LDMxNSBMMTkzLDMxNSBDMjA3LjM1OTQwMywzMTUgMjE5LDMyNi42NDA1OTcgMjE5LDM0MSBMMjE5LDYwNCBaIiBpZD0iQ29tYmluZWQtU2hhcGUiIGZpbGw9InVybCgjbGluZWFyR3JhZGllbnQtNSkiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==" alt="Power BI">Dashboard<span>incrustado desde Power BI</span></h4>
+            <div class="tiles3">
+              <div class="kt"><b class="warn" id="k-sin">2</b><span>Sin atender</span></div>
+              <div class="kt"><b class="live" id="k-tot">6</b><span>Incumplimientos del mes</span></div>
+              <div class="kt"><b class="live">97.4%</b><span>Cumplimiento</span></div>
+            </div>
+            <div class="spark" role="img" aria-label="Incumplimientos por mes">
+              <i data-h="34" title="Feb · 4"></i><i data-h="58" title="Mar · 7"></i><i data-h="70" title="Abr · 8"></i>
+              <i data-h="52" title="May · 6"></i><i class="hot" data-h="82" title="Jun · 10"></i>
+              <i data-h="46" title="Jul · 5"></i><i data-h="62" title="Ago · 6"></i>
+            </div>
+            <p style="font-size:13px; color:var(--ink2); margin:14px 0 0; font-weight:500">Incumplimientos por mes · unidad operativa del usuario</p>
           </div>
-          <div class="spark" role="img" aria-label="Incumplimientos por mes">
-            <i data-h="34"></i><i data-h="58"></i><i data-h="70"></i><i data-h="52"></i>
-            <i class="hot" data-h="82"></i><i data-h="46"></i><i data-h="62"></i>
+        </div>
+
+        <!-- ALERTAS -->
+        <div class="ap-view" id="v-aler">
+          <div class="mk-sect">
+            <h4>Seguimiento de alertas<span>toca el estatus para avanzarlo</span></h4>
+            <div class="ap-fil" id="ap-fil"></div>
+            <table class="atab"><thead><tr>
+              <th>Cliente</th><th>Producto</th><th>Nivel</th><th>Estatus</th><th>Responsable</th>
+            </tr></thead><tbody id="ap-tb"></tbody></table>
+            <p class="ap-hint"><i></i>El cambio de estatus se registra de vuelta y actualiza el tablero.</p>
           </div>
-          <p style="font-size:12px; color:var(--d-ink2); margin:12px 0 0; font-weight:500; opacity:.75">Incumplimientos por mes · unidad operativa del usuario</p>
         </div>
-        <div class="mk-sect">
-          <h4>Seguimiento de alertas<span>estatus y responsable</span></h4>
-          <table class="atab">
-            <thead><tr><th>Cliente</th><th>Producto</th><th>Nivel</th><th>Estatus</th><th>Responsable</th></tr></thead>
-            <tbody>
-              <tr class="arow"><td><b>Cliente</b><br>Unidad operativa</td><td>Producto no autorizado</td><td>Primaria</td>
-                <td><span class="st a">Sin atender</span></td>
-                <td><div class="who"><span class="av">JM</span>Jefe de unidad</div></td></tr>
-              <tr class="arow"><td><b>Cliente</b><br>Unidad operativa</td><td>Producto no autorizado</td><td>Colegios</td>
-                <td><span class="st b">En revisión</span></td>
-                <td><div class="who"><span class="av">AR</span>Auditoría</div></td></tr>
-              <tr class="arow"><td><b>Cliente</b><br>Unidad operativa</td><td>Producto no autorizado</td><td>Colegios</td>
-                <td><span class="st c">Atendida</span></td>
-                <td><div class="who"><span class="av">SC</span>Supervisor comercial</div></td></tr>
-            </tbody>
-          </table>
+
+        <!-- CLIENTES -->
+        <div class="ap-view" id="v-clie">
+          <div class="mk-sect">
+            <h4>Clientes del canal educativo<span>ordenados por incumplimientos</span></h4>
+            <table class="atab"><thead><tr>
+              <th>Cliente</th><th>Unidad operativa</th><th>Nivel</th><th>Incumpl.</th><th>Cumplimiento</th>
+            </tr></thead><tbody id="ap-cl"></tbody></table>
+          </div>
         </div>
+
+        <!-- PORTAFOLIO -->
+        <div class="ap-view" id="v-port">
+          <div class="mk-sect">
+            <h4>Portafolio autorizado<span>la regla, producto por producto</span></h4>
+            <table class="atab"><thead><tr>
+              <th>Producto</th><th>Categoría</th><th>Primaria</th><th>Colegios</th>
+            </tr></thead><tbody id="ap-pf"></tbody></table>
+          </div>
+        </div>
+        <div class="ap-toast" id="ap-toast">Estatus actualizado</div>
       </div>
     </div>
   </div>
@@ -811,6 +856,91 @@ function countUp(){
   })(t0);
 }
 
+
+/* ===== prototipo de la Power App ===== */
+const EST = [
+  {t:'Sin atender', c:'a'},
+  {t:'En revisión', c:'b'},
+  {t:'Atendida',    c:'c'}
+];
+const ALERTAS = [
+  {cl:'Cliente 0412', un:'Medellín',         pr:'Bebida energizante 473 ml', nv:'Colegios',         st:0, rs:'Jefe de unidad',      in:'JM'},
+  {cl:'Cliente 1188', un:'Bogotá Occidente', pr:'Gaseosa 400 ml',            nv:'Primaria',         st:0, rs:'Supervisor comercial', in:'SC'},
+  {cl:'Cliente 0733', un:'Cali',             pr:'Bebida energizante 473 ml', nv:'Otros educativos', st:1, rs:'Auditoría',            in:'AR'},
+  {cl:'Cliente 2051', un:'Barranquilla',     pr:'Agua saborizada 600 ml',    nv:'Primaria',         st:1, rs:'Jefe de unidad',       in:'JM'},
+  {cl:'Cliente 0298', un:'Cartagena',        pr:'Gaseosa 250 ml',            nv:'Primaria',         st:2, rs:'Supervisor comercial', in:'SC'},
+  {cl:'Cliente 1620', un:'Medellín',         pr:'Bebida energizante 473 ml', nv:'Colegios',         st:2, rs:'Auditoría',            in:'AR'}
+];
+const CLIENTES = [
+  ['Cliente 0412','Medellín','Colegios',4,'92%'],
+  ['Cliente 1188','Bogotá Occidente','Primaria',3,'88%'],
+  ['Cliente 0733','Cali','Otros educativos',2,'95%'],
+  ['Cliente 2051','Barranquilla','Primaria',2,'96%'],
+  ['Cliente 0298','Cartagena','Primaria',1,'98%']
+];
+const PORTA = [
+  ['Agua natural 600 ml',      'Agua',               1, 1],
+  ['Ades manzana 200 ml',      'Bebida vegetal',     1, 1],
+  ['Agua saborizada 600 ml',   'Agua saborizada',    0, 1],
+  ['Gaseosa 400 ml',           'Gaseosa',            0, 1],
+  ['Bebida energizante 473 ml','Energizante',        0, 0]
+];
+
+let filtro = -1;
+const $$ = id => document.getElementById(id);
+
+function pintaFiltros(){
+  const n = i => ALERTAS.filter(a=>a.st===i).length;
+  $$('ap-fil').innerHTML =
+    `<button data-f="-1"${filtro===-1?' class="on"':''}>Todas<b>${ALERTAS.length}</b></button>` +
+    EST.map((e,i)=>`<button data-f="${i}"${filtro===i?' class="on"':''}>${e.t}<b>${n(i)}</b></button>`).join('');
+  $$('ap-fil').querySelectorAll('button').forEach(b=>
+    b.addEventListener('click', ()=>{ filtro = +b.dataset.f; pintaFiltros(); pintaAlertas(); }));
+}
+function pintaAlertas(){
+  const vis = ALERTAS.map((a,i)=>[a,i]).filter(([a])=> filtro<0 || a.st===filtro);
+  $$('ap-tb').innerHTML = vis.map(([a,i])=>`<tr>
+    <td><b>${a.cl}</b><br>${a.un}</td>
+    <td>${a.pr}</td><td>${a.nv}</td>
+    <td><button class="st ${EST[a.st].c}" data-i="${i}" title="Avanzar estatus">${EST[a.st].t}</button></td>
+    <td><div class="who"><span class="av">${a.in}</span>${a.rs}</div></td></tr>`).join('')
+    || `<tr><td colspan="5" style="padding:26px 0; text-align:center">Sin alertas en este estatus.</td></tr>`;
+  $$('ap-tb').querySelectorAll('.st').forEach(b=>
+    b.addEventListener('click', ()=>{
+      const a = ALERTAS[+b.dataset.i];
+      a.st = (a.st + 1) % 3;
+      pintaFiltros(); pintaAlertas(); pintaKPIs(); toast('Estatus: ' + EST[a.st].t);
+    }));
+}
+function pintaKPIs(){
+  const sin = ALERTAS.filter(a=>a.st===0).length;
+  $$('k-sin').textContent = sin;
+  $$('k-sin').className = sin ? 'warn' : 'live';
+  $$('k-tot').textContent = ALERTAS.length;
+}
+let tt;
+function toast(txt){
+  const t = $$('ap-toast'); t.textContent = txt; t.classList.add('on');
+  clearTimeout(tt); tt = setTimeout(()=>t.classList.remove('on'), 1700);
+}
+$$('ap-cl').innerHTML = CLIENTES.map(c=>`<tr>
+  <td><b>${c[0]}</b></td><td>${c[1]}</td><td>${c[2]}</td>
+  <td><b>${c[3]}</b></td><td>${c[4]}</td></tr>`).join('');
+$$('ap-pf').innerHTML = PORTA.map(r=>`<tr>
+  <td><b>${r[0]}</b></td><td>${r[1]}</td>
+  <td class="${r[2]?'ap-ok':'ap-no'}">${r[2]?'Permitido':'No permitido'}</td>
+  <td class="${r[3]?'ap-ok':'ap-no'}">${r[3]?'Permitido':'No permitido'}</td></tr>`).join('');
+
+document.querySelectorAll('.mk-nav a').forEach((a,i)=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    document.querySelectorAll('.mk-nav a').forEach(x=>x.classList.remove('on'));
+    a.classList.add('on');
+    document.querySelectorAll('.ap-view').forEach((v,k)=>v.classList.toggle('on', k===i));
+  });
+});
+pintaFiltros(); pintaAlertas(); pintaKPIs();
+
 /* ===== titulos linea por linea ===== */
 document.querySelectorAll('h1, h2').forEach(h=>{
   if(!/<br\s*\/?>/i.test(h.innerHTML)) return;
@@ -828,7 +958,6 @@ const io = new IntersectionObserver(es=>{
       t.querySelectorAll('.spark i').forEach((b,i)=>{
         b.style.transitionDelay = (170+i*70)+'ms'; b.style.height = b.dataset.h + '%';
       });
-      t.querySelectorAll('.arow').forEach((r,i)=> r.style.transitionDelay = (300+i*130)+'ms');
     }
     if(t.id === 'est') countUp();
     io.unobserve(t);
